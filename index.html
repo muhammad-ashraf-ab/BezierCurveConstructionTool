@@ -18,12 +18,19 @@
         var canvasHeight = canvas.height;
         var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
 
-        let p1, p2, p3, p4, selectedPoint;
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        let p1, p2, p3, p4, selectedPoint, previousPoint;
+        const outboundsPoint = new Point(0, 0);
 
         let oldWidth = canvasWidth, oldHeight = canvasHeight;
 
         window.addEventListener('resize', resizeCanvas, false);
-        // document.onclick = movePoint;
 
         let moved = false;
 
@@ -42,18 +49,12 @@
         
         let upListener = () => {
              moved = false;
+             selectedPoint = outboundsPoint;
         }
         document.addEventListener('mouseup', upListener)
 
         function calculateDistance(x1, y1, x2, y2) {
             return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-        }
-
-        class Point {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-            }
         }
 
         function choosePoint(x, y) {
@@ -105,9 +106,10 @@
             redraw();
         }
 
-        // That's how you define the value of a pixel
-        function drawPixel (x, y) {
-            ctx.fillRect(x, y, 1, 1);
+        function drawPixel (point) {
+            // ctx.fillRect(point.x, point.y, 1, 1);
+            drawLine(previousPoint, point);
+            previousPoint = point;
         }
 
         function drawLine(start, end, stroke = 'black', width = 1) {
@@ -154,7 +156,7 @@
             // drawLine(p12, p23);
             // drawLine(p23, p34);
             // drawLine(p123, p234);
-            drawPixel(p1234.x, p1234.y);
+            drawPixel(p1234);
         }
 
         function drawCurve() {
@@ -162,10 +164,12 @@
             drawLine(p2, p3);
             drawLine(p3, p4);
 
+            previousPoint = p1;
+
             var u = 0;
             while (u <= 1) {
                 drawPoint(u);
-                u += 0.0005;
+                u += 0.005;
             }
         }
         
