@@ -7,6 +7,78 @@
     <title>Bezier Curve</title>
 </head>
 <body>
-    
+    <canvas id="canvas" width="1280" height="720"></canvas>
+    <script>
+
+        let p1, p2, p3, p4;
+
+        var canvas = document.getElementById(`canvas`);
+        var ctx = canvas.getContext(`2d`);
+        var canvasWidth = canvas.width;
+        var canvasHeight = canvas.height;
+        var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+        // That's how you define the value of a pixel
+        function drawPixel (x, y) {
+            ctx.fillRect(x, y, 1, 1);
+        }
+
+        function drawLine(begin, end, stroke = 'black', width = 1) {
+            if (stroke) {
+                ctx.strokeStyle = stroke;
+            }
+
+            if (width) {
+                ctx.lineWidth = width;
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(...begin);
+            ctx.lineTo(...end);
+            ctx.stroke();
+        }
+
+        function getRandomNumber(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function interpolatePoint(first, second, u) {
+            return (first.map((valueA, indexInA) => valueA - second[indexInA])).map(x =>  x * u).map((valueA, indexInA) => valueA + second[indexInA]);
+        }
+
+        function init() {
+            p1 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(canvas.height / 2, 620)];
+            p2 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(100, canvas.height / 2)];
+            p3 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(100, canvas.height / 2)];
+            p4 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(canvas.height / 2, canvas.height - 100)];
+
+            drawLine(p1, p2);
+            drawLine(p2, p3);
+            drawLine(p3, p4);
+        }
+
+        function drawCurve(u) {
+            
+            let p12 = interpolatePoint(p1, p2, u);
+            let p23 = interpolatePoint(p2, p3, u);
+            let p34 = interpolatePoint(p3, p4, u);
+
+            let p123 = interpolatePoint(p12, p23, u);
+            let p234 = interpolatePoint(p23, p34, u);
+
+            let p1234 = interpolatePoint(p123, p234, u);
+
+            // drawLine(p12, p23);
+            // drawLine(p23, p34);
+            // drawLine(p123, p234);
+            drawPixel(p1234[0], p1234[1]);
+        }
+        init();
+        var u = 0;
+        while (u <= 1) {
+            drawCurve(u);
+            u += 0.0005;
+        }
+    </script>
 </body>
 </html>
