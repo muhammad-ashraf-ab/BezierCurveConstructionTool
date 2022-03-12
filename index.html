@@ -14,9 +14,23 @@
 
         var canvas = document.getElementById(`canvas`);
         var ctx = canvas.getContext(`2d`);
+        ctx.canvas.width  = window.innerWidth;
+        ctx.canvas.height = window.innerHeight;
         var canvasWidth = canvas.width;
         var canvasHeight = canvas.height;
         var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+        let oldWidth = canvasWidth, oldHeight = canvasHeight;
+
+        window.addEventListener('resize', resizeCanvas, false);
+
+        function resizeCanvas() {
+            ctx.canvas.width  = window.innerWidth;
+            ctx.canvas.height = window.innerHeight;
+            canvasWidth = canvas.width;
+            canvasHeight = canvas.height;
+            redraw();
+        }
 
         // That's how you define the value of a pixel
         function drawPixel (x, y) {
@@ -47,17 +61,13 @@
         }
 
         function init() {
-            p1 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(canvas.height / 2, 620)];
+            p1 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(canvas.height / 2, canvas.height - 100)];
             p2 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(100, canvas.height / 2)];
             p3 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(100, canvas.height / 2)];
             p4 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(canvas.height / 2, canvas.height - 100)];
-
-            drawLine(p1, p2);
-            drawLine(p2, p3);
-            drawLine(p3, p4);
         }
 
-        function drawCurve(u) {
+        function drawPoint(u) {
             
             let p12 = interpolatePoint(p1, p2, u);
             let p23 = interpolatePoint(p2, p3, u);
@@ -73,12 +83,33 @@
             // drawLine(p123, p234);
             drawPixel(p1234[0], p1234[1]);
         }
-        init();
-        var u = 0;
-        while (u <= 1) {
-            drawCurve(u);
-            u += 0.0005;
+
+        function drawCurve() {
+            drawLine(p1, p2);
+            drawLine(p2, p3);
+            drawLine(p3, p4);
+
+            var u = 0;
+            while (u <= 1) {
+                drawPoint(u);
+                u += 0.0005;
+            }
         }
+        
+        function redraw() {
+            p1 = [p1[0] * canvasWidth / oldWidth, p1[1] * canvasWidth / oldWidth]
+            p2 = [p2[0] * canvasWidth / oldWidth, p2[1] * canvasWidth / oldWidth]
+            p3 = [p3[0] * canvasWidth / oldWidth, p3[1] * canvasWidth / oldWidth]
+            p4 = [p4[0] * canvasWidth / oldWidth, p4[1] * canvasWidth / oldWidth]
+
+            drawCurve();
+
+            oldWidth = canvasWidth;
+            oldHeight = canvasHeight;
+        }
+
+        init();
+        drawCurve();
     </script>
 </body>
 </html>
