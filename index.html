@@ -23,6 +23,71 @@
         let oldWidth = canvasWidth, oldHeight = canvasHeight;
 
         window.addEventListener('resize', resizeCanvas, false);
+        // document.onclick = movePoint;
+
+        let moved = false;
+
+        let downListener = () => {
+            moved = true;
+        }
+        document.addEventListener('mousedown', downListener)
+
+        let moveListener = () => {
+            if (moved) {
+                movePoint(event);
+            }
+        }
+        document.addEventListener('mousemove', moveListener)
+        
+        let upListener = () => {
+             moved = false;
+        }
+        document.addEventListener('mouseup', upListener)
+
+        function calculateDistance(x1, y1, x2, y2) {
+            return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+        }
+
+        function movePoint(event) {
+            var bounds = event.target.getBoundingClientRect();
+
+            let pDist = [];
+            pDist[0] = calculateDistance(event.pageX, event.pageY, p1[0], p1[1]);
+            pDist[1] = calculateDistance(event.pageX, event.pageY, p2[0], p2[1]);
+            pDist[2] = calculateDistance(event.pageX, event.pageY, p3[0], p3[1]);
+            pDist[3] = calculateDistance(event.pageX, event.pageY, p4[0], p4[1]);
+
+            const min = Math.min(...pDist);
+            const index = pDist.indexOf(min);
+
+            // TODO: Fix bug where points can swap during overlap
+            if (min < 500) {
+                switch (index) {
+                    case 0:
+                        p1[0] = event.pageX - bounds.left - scrollX;
+                        p1[1] = event.pageY - bounds.top - scrollY;
+                        break;
+                        
+                    case 1:
+                        p2[0] = event.pageX - bounds.left - scrollX;
+                        p2[1] = event.pageY - bounds.top - scrollY;
+                        break;
+                        
+                    case 2:
+                        p3[0] = event.pageX - bounds.left - scrollX;
+                        p3[1] = event.pageY - bounds.top - scrollY;
+                        break;
+                        
+                    case 3:
+                        p4[0] = event.pageX - bounds.left - scrollX;
+                        p4[1] = event.pageY - bounds.top - scrollY;
+                        break;
+                }
+            }
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            redraw();
+        }
 
         function resizeCanvas() {
             ctx.canvas.width  = window.innerWidth;
