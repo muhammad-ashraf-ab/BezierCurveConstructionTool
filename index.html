@@ -10,8 +10,6 @@
     <canvas id="canvas" width="1280" height="720"></canvas>
     <script>
 
-        let p1, p2, p3, p4;
-
         var canvas = document.getElementById(`canvas`);
         var ctx = canvas.getContext(`2d`);
         ctx.canvas.width  = window.innerWidth;
@@ -19,6 +17,8 @@
         var canvasWidth = canvas.width;
         var canvasHeight = canvas.height;
         var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+        let p1, p2, p3, p4, selectedPoint;
 
         let oldWidth = canvasWidth, oldHeight = canvasHeight;
 
@@ -29,6 +29,7 @@
 
         let downListener = () => {
             moved = true;
+            choosePoint(event.pageX, event.pageY);
         }
         document.addEventListener('mousedown', downListener)
 
@@ -48,42 +49,49 @@
             return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
         }
 
-        function movePoint(event) {
-            var bounds = event.target.getBoundingClientRect();
+        class Point {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+        }
 
+        function choosePoint(x, y) {
             let pDist = [];
-            pDist[0] = calculateDistance(event.pageX, event.pageY, p1[0], p1[1]);
-            pDist[1] = calculateDistance(event.pageX, event.pageY, p2[0], p2[1]);
-            pDist[2] = calculateDistance(event.pageX, event.pageY, p3[0], p3[1]);
-            pDist[3] = calculateDistance(event.pageX, event.pageY, p4[0], p4[1]);
+            pDist[0] = calculateDistance(x, y, p1.x, p1.y);
+            pDist[1] = calculateDistance(x, y, p2.x, p2.y);
+            pDist[2] = calculateDistance(x, y, p3.x, p3.y);
+            pDist[3] = calculateDistance(x, y, p4.x, p4.y);
 
             const min = Math.min(...pDist);
             const index = pDist.indexOf(min);
 
-            // TODO: Fix bug where points can swap during overlap
-            if (min < 500) {
+            if (min < 50) {
                 switch (index) {
                     case 0:
-                        p1[0] = event.pageX - bounds.left - scrollX;
-                        p1[1] = event.pageY - bounds.top - scrollY;
+                        selectedPoint = p1;
                         break;
                         
                     case 1:
-                        p2[0] = event.pageX - bounds.left - scrollX;
-                        p2[1] = event.pageY - bounds.top - scrollY;
+                        selectedPoint = p2;
                         break;
                         
                     case 2:
-                        p3[0] = event.pageX - bounds.left - scrollX;
-                        p3[1] = event.pageY - bounds.top - scrollY;
+                        selectedPoint = p3;
                         break;
                         
                     case 3:
-                        p4[0] = event.pageX - bounds.left - scrollX;
-                        p4[1] = event.pageY - bounds.top - scrollY;
+                        selectedPoint = p4;
                         break;
                 }
             }
+        }
+
+        function movePoint(event) {
+            var bounds = event.target.getBoundingClientRect();
+
+            selectedPoint.x = event.pageX - bounds.left - scrollX;
+            selectedPoint.y = event.pageY - bounds.top - scrollY;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             redraw();
@@ -102,7 +110,7 @@
             ctx.fillRect(x, y, 1, 1);
         }
 
-        function drawLine(begin, end, stroke = 'black', width = 1) {
+        function drawLine(start, end, stroke = 'black', width = 1) {
             if (stroke) {
                 ctx.strokeStyle = stroke;
             }
@@ -112,8 +120,8 @@
             }
 
             ctx.beginPath();
-            ctx.moveTo(...begin);
-            ctx.lineTo(...end);
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
             ctx.stroke();
         }
 
@@ -122,14 +130,14 @@
         }
 
         function interpolatePoint(first, second, u) {
-            return (first.map((valueA, indexInA) => valueA - second[indexInA])).map(x =>  x * u).map((valueA, indexInA) => valueA + second[indexInA]);
+            return new Point((second.x - first.x) * u + first.x, (second.y - first.y) * u + first.y);
         }
 
         function init() {
-            p1 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(canvas.height / 2, canvas.height - 100)];
-            p2 = [getRandomNumber(100, canvas.width / 2), getRandomNumber(100, canvas.height / 2)];
-            p3 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(100, canvas.height / 2)];
-            p4 = [getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(canvas.height / 2, canvas.height - 100)];
+            p1 = new Point(getRandomNumber(100, canvas.width / 2), getRandomNumber(canvas.height / 2, canvas.height - 100));
+            p2 = new Point(getRandomNumber(100, canvas.width / 2), getRandomNumber(100, canvas.height / 2));
+            p3 = new Point(getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(100, canvas.height / 2));
+            p4 = new Point(getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(canvas.height / 2, canvas.height - 100));
         }
 
         function drawPoint(u) {
@@ -146,7 +154,7 @@
             // drawLine(p12, p23);
             // drawLine(p23, p34);
             // drawLine(p123, p234);
-            drawPixel(p1234[0], p1234[1]);
+            drawPixel(p1234.x, p1234.y);
         }
 
         function drawCurve() {
@@ -161,11 +169,16 @@
             }
         }
         
+        function scalePoint(point) {
+            point.x = point.x * canvasWidth / oldWidth;
+            point.y = point.y * canvasHeight / oldHeight;
+        }
+
         function redraw() {
-            p1 = [p1[0] * canvasWidth / oldWidth, p1[1] * canvasWidth / oldWidth]
-            p2 = [p2[0] * canvasWidth / oldWidth, p2[1] * canvasWidth / oldWidth]
-            p3 = [p3[0] * canvasWidth / oldWidth, p3[1] * canvasWidth / oldWidth]
-            p4 = [p4[0] * canvasWidth / oldWidth, p4[1] * canvasWidth / oldWidth]
+            scalePoint(p1);
+            scalePoint(p2);
+            scalePoint(p3);
+            scalePoint(p4);
 
             drawCurve();
 
