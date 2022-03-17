@@ -18,17 +18,54 @@
         }
 
         .wrapper {
-            position:relative;
+            position: relative;
         }
-        .wrapper > canvas,
-        .wrapper > input {
-            position:absolute;
-            left:0;
-            top:0;
+
+        .wrapper > canvas, #inputs {
+            position: absolute;
+            left: 0;
+            top: 0;
         }
-        .wrapper > input {
-            left: 50%;
-            top:10px;
+
+        #inputs {
+            width: 100%;
+        }
+
+        .slider {
+            position: absolute;
+            left: 30%;
+            top: 20px;
+
+            -webkit-appearance: none;
+            appearance: none;
+            width: 40%;
+            height: 6px;
+            border-radius: 3px;
+            background: #484848;
+            outline: none;
+            opacity: 70%;
+            -webkit-transition: 0.2s;
+            transition: opacity 0.2s;
+        }
+
+        .slider:hover {
+            opacity: 1;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 5px;
+            height: 20px;
+            border-radius: 50%;
+            background: #969696;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 3px;
+            height: 20px;
+            border-radius: 50%;
+            background: #969696;
         }
 
     </style>
@@ -36,7 +73,9 @@
 <body>
     <div class="wrapper">
         <canvas id="canvas" width="1280" height="720"></canvas>
-        <input id="slider" type="range" value="1" min="0" max="1" step="0.01" oninput="sliderUpdateT(this.value)"/>
+        <div id="inputs">
+            <input class="slider" autocomplete="off" type="range" value="1" min="0" max="1" step="0.005" oninput="sliderUpdateT(this.value)"/>
+        </div>
     </div>
 
     <script>
