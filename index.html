@@ -10,11 +10,35 @@
             width:  100%;
             height: 100%;
             margin: 0;
+            overflow: hidden;
         }
+
+        #canvas {
+            display: block;
+        }
+
+        .wrapper {
+            position:relative;
+        }
+        .wrapper > canvas,
+        .wrapper > input {
+            position:absolute;
+            left:0;
+            top:0;
+        }
+        .wrapper > input {
+            left: 50%;
+            top:10px;
+        }
+
     </style>
 </head>
 <body>
-    <canvas id="canvas" width="1280" height="720"></canvas>
+    <div class="wrapper">
+        <canvas id="canvas" width="1280" height="720"></canvas>
+        <input id="slider" type="range" value="1" min="0" max="1" step="0.01" oninput="sliderUpdateT(this.value)"/>
+    </div>
+
     <script>
 
         var canvas = document.getElementById(`canvas`);
@@ -24,6 +48,12 @@
         var canvasWidth = canvas.width;
         var canvasHeight = canvas.height;
         var canvasData = ctx.getImageData(0, 0, canvasWidth, canvasHeight);
+
+        const BACKGROUNDCOLOR = `rgb(40, 40, 40)`;
+        const CONSTRUCTIONLINECOLOR = `rgb(0, 0, 0)`;
+
+        ctx.fillStyle = BACKGROUNDCOLOR;
+        ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
         const CIRCLESIZE = 7;
 
@@ -36,6 +66,12 @@
 
         let p1, p2, p3, p4, selectedPoint, previousPoint;
         const outboundsPoint = new Point(0, 0);
+        let T = 1;
+        
+        function sliderUpdateT(value){
+            T = value;
+            redraw()
+        }
 
         let oldWidth = canvasWidth, oldHeight = canvasHeight;
 
@@ -76,7 +112,7 @@
             const min = Math.min(...pDist);
             const index = pDist.indexOf(min);
 
-            if (min < CIRCLESIZE) {
+            if (min < CIRCLESIZE * 1.25) {
                 switch (index) {
                     case 0:
                         selectedPoint = p1;
@@ -164,9 +200,12 @@
 
             let p1234 = interpolatePoint(p123, p234, u);
 
-            // drawLine(p12, p23);
-            // drawLine(p23, p34);
-            // drawLine(p123, p234);
+            if (u >= 0.495 && u <= 0.505) {
+                drawLine(p12, p23, CONSTRUCTIONLINECOLOR, 2);
+                drawLine(p23, p34, CONSTRUCTIONLINECOLOR, 2);
+                drawLine(p123, p234, CONSTRUCTIONLINECOLOR, 2);
+
+            }
             drawPixel(p1234, stroke, width);
         }
 
@@ -180,7 +219,7 @@
             var t0 = 0;
             var u = 1 / steps;
             while (t0 <= t) {
-                drawPoint(t0, stroke, 2);
+                drawPoint(t0, stroke, 3);
                 t0 += u;
             }
 
@@ -201,7 +240,10 @@
             scalePoint(p3);
             scalePoint(p4);
 
-            drawCurve(100, 0.5);
+            ctx.fillStyle = BACKGROUNDCOLOR;
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+            drawCurve(200, T);
 
             drawCircles(p1);
             drawCircles(p2);
@@ -225,7 +267,7 @@
         }
 
         init();
-        drawCurve();
+        drawCurve(200, T);
         
         drawCircles(p1);
         drawCircles(p2);
