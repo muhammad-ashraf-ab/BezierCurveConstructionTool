@@ -239,7 +239,7 @@
 
             let p1234 = interpolatePoint(p123, p234, u);
 
-            if (u >= 0.495 && u <= 0.505) {
+            if (equalTo(u, T)) {
                 drawLine(p12, p23, CONSTRUCTIONLINECOLOR, 2);
                 drawLine(p23, p34, CONSTRUCTIONLINECOLOR, 2);
                 drawLine(p123, p234, CONSTRUCTIONLINECOLOR, 2);
@@ -303,6 +303,10 @@
             ctx.beginPath();
             ctx.arc(point.x, point.y, CIRCLESIZE * 0.85, 0, 2 * Math.PI);
             ctx.fill();
+        }
+
+        function equalTo(first, second) {
+            return (Math.abs(first - second) < 0.0001)
         }
 
         init();
