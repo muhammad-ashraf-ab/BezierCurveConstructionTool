@@ -180,23 +180,34 @@
         let moved = false;
 
         let downListener = () => {
+            let eventx, eventy;
             moved = true;
-            choosePoint(event.pageX, event.pageY);
+            if (event.type == "touchstart") {
+                eventx = event.touches[0].clientX;
+                eventy = event.touches[0].clientY;
+            } else {
+                eventx = event.clientX;
+                eventy = event.clientY;
+            }
+            choosePoint(eventx, eventy);
         }
-        document.addEventListener('mousedown', downListener)
+        document.addEventListener('mousedown', downListener);
+        document.addEventListener('touchstart', downListener);
 
         let moveListener = () => {
             if (moved) {
                 movePoint(event);
             }
         }
-        document.addEventListener('mousemove', moveListener)
+        document.addEventListener('mousemove', moveListener);
+        document.addEventListener('touchmove', moveListener);
         
         let upListener = () => {
              moved = false;
              selectedPoint = outboundsPoint;
         }
-        document.addEventListener('mouseup', upListener)
+        document.addEventListener('mouseup', upListener);
+        document.addEventListener('mouseend', upListener);
 
         function calculateDistance(x1, y1, x2, y2) {
             return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
@@ -235,9 +246,19 @@
 
         function movePoint(event) {
             var bounds = event.target.getBoundingClientRect();
+            
+            let eventx, eventy;
 
-            selectedPoint.x = event.pageX - bounds.left - scrollX;
-            selectedPoint.y = event.pageY - bounds.top - scrollY;
+            if (event.type == "touchstart") {
+                eventx = event.touches[0].clientX;
+                eventy = event.touches[0].clientY;
+            } else {
+                eventx = event.clientX;
+                eventy = event.clientY;
+            }
+
+            selectedPoint.x = eventx - bounds.left - scrollX;
+            selectedPoint.y = eventy - bounds.top - scrollY;
             
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             redraw();
