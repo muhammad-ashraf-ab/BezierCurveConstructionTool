@@ -31,19 +31,29 @@
             width: 100%;
         }
 
+        #Tlabel {
+            position: absolute;
+            left: 29%;
+            top: 15px;
+
+            opacity: 0.7;
+            color: #969696;
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+        }
+
         .slider {
             position: absolute;
             left: 30%;
             top: 20px;
+            width: 40%;
+            height: 6px;
 
             -webkit-appearance: none;
             appearance: none;
-            width: 40%;
-            height: 6px;
             border-radius: 3px;
             background: #484848;
             outline: none;
-            opacity: 70%;
+            opacity: 0.7;
             -webkit-transition: 0.2s;
             transition: opacity 0.2s;
         }
@@ -68,13 +78,59 @@
             background: #969696;
         }
 
+        .sliderTextValue {
+            position: absolute;
+            left: 71%;
+            top: 15px;
+            width: 5ch;
+
+            opacity: 0.7;
+            border: 0;
+            color: #969696;
+            font-family: Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .sliderTextValue:hover {
+            opacity: 1;
+        }
+
+        .sliderTextValue::-webkit-outer-spin-button,
+        .sliderTextValue::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .sliderTextValue {
+            -moz-appearance: textfield;
+        }
+
     </style>
 </head>
 <body>
     <div class="wrapper">
         <canvas id="canvas" width="1280" height="720"></canvas>
         <div id="inputs">
-            <input class="slider" autocomplete="off" type="range" value="1" min="0" max="1" step="0.005" oninput="sliderUpdateT(this.value)"/>
+            <label for="Tslider" id="Tlabel">t</label>
+
+            <input id="Tslider" 
+                   class="slider" 
+                   autocomplete="off" 
+                   type="range" 
+                   value="1" 
+                   min="0" 
+                   max="1" 
+                   step="0.005" 
+                   oninput="sliderUpdateT(this.value)"/>
+
+            <input id="TsliderTextValue" 
+                   class="sliderTextValue" 
+                   autocomplete="off" 
+                   type="number" 
+                   value="1" 
+                   min="0" 
+                   max="1" 
+                   step="0.01"
+                   oninput="sliderUpdateT(this.value)"/>
         </div>
     </div>
 
@@ -109,7 +165,12 @@
         
         function sliderUpdateT(value){
             T = value;
-            redraw()
+            let slider = document.getElementById("Tslider");
+            let sliderText = document.getElementById("TsliderTextValue");
+
+            slider.value = T;
+            sliderText.value = T;
+            redraw();
         }
 
         let oldWidth = canvasWidth, oldHeight = canvasHeight;
@@ -224,6 +285,10 @@
             p2 = new Point(getRandomNumber(100, canvas.width / 2), getRandomNumber(100, canvas.height / 2));
             p3 = new Point(getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(100, canvas.height / 2));
             p4 = new Point(getRandomNumber(canvas.width / 2, canvas.width - 100), getRandomNumber(canvas.height / 2, canvas.height - 100));
+
+            for (item of document.getElementsByClassName("sliderTextValue")) {
+                item.style.background = BACKGROUNDCOLOR;
+            }
 
             selectedPoint = outboundsPoint;
         }
