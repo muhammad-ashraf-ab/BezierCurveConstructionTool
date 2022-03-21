@@ -249,7 +249,7 @@
             
             let eventx, eventy;
 
-            if (event.type == "touchstart") {
+            if (event.type == "touchstart" || event.type == "touchmove" || event.type == "touchend") {
                 eventx = event.touches[0].clientX;
                 eventy = event.touches[0].clientY;
             } else {
