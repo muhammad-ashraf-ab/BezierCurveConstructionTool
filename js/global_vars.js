@@ -9,6 +9,8 @@ var oldHeight;
 const BACKGROUNDCOLOR = `rgb(40, 40, 40)`;
 const CONSTRUCTIONLINECOLOR = `rgb(0, 0, 0)`;
 const CIRCLESIZE = 7;
+const STEPSIZE = 200;
+const NOOFNODES = 4;
 
 class Point {
     constructor(x, y) {
@@ -17,7 +19,9 @@ class Point {
     }
 }
 
-var p1, p2, p3, p4;
+// var p1, p2, p3, p4;
+const controlPoints = [];
+const points = [];
 var selectedPoint;
 var previousPoint;
 const outboundsPoint = new Point(0, 0);

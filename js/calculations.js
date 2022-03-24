@@ -16,36 +16,48 @@ function calculateDistance(x1, y1, x2, y2) {
 }
 
 function equalTo(first, second) {
-    return (Math.abs(first - second) < 0.0001)
+    return (Math.abs(first - second) < 0.001)
 }
 
 function choosePoint(x, y) {
     let pDist = [];
-    pDist[0] = calculateDistance(x, y, p1.x, p1.y);
-    pDist[1] = calculateDistance(x, y, p2.x, p2.y);
-    pDist[2] = calculateDistance(x, y, p3.x, p3.y);
-    pDist[3] = calculateDistance(x, y, p4.x, p4.y);
+    // pDist[0] = calculateDistance(x, y, p1.x, p1.y);
+    // pDist[1] = calculateDistance(x, y, p2.x, p2.y);
+    // pDist[2] = calculateDistance(x, y, p3.x, p3.y);
+    // pDist[3] = calculateDistance(x, y, p4.x, p4.y);
+
+    for (let i = 0; i < controlPoints.length; ++i) {
+        pDist[i] = calculateDistance(x, y, controlPoints[i].x, controlPoints[i].y);
+    }
 
     const min = Math.min(...pDist);
     const index = pDist.indexOf(min);
 
     if (min < CIRCLESIZE * 1.25) {
-        switch (index) {
-            case 0:
-                selectedPoint = p1;
-                break;
+        // switch (index) {
+        //     case 0:
+        //         selectedPoint = p1;
+        //         break;
                 
-            case 1:
-                selectedPoint = p2;
-                break;
+        //     case 1:
+        //         selectedPoint = p2;
+        //         break;
                 
-            case 2:
-                selectedPoint = p3;
-                break;
+        //     case 2:
+        //         selectedPoint = p3;
+        //         break;
                 
-            case 3:
-                selectedPoint = p4;
-                break;
-        }
+        //     case 3:
+        //         selectedPoint = p4;
+        //         break;
+        // }
+
+        selectedPoint = controlPoints[index];
+    }
+}
+
+function clearArray(array) {
+    while (array.length) {
+      array.pop();
     }
 }
