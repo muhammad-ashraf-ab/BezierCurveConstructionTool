@@ -17,7 +17,9 @@ class Point {
     }
 }
 
-var p1, p2, p3, p4, selectedPoint, previousPoint;
+var p1, p2, p3, p4;
+var selectedPoint;
+var previousPoint;
 const outboundsPoint = new Point(0, 0);
 
 var T = 1;

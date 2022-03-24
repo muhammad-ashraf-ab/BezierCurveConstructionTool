@@ -4,21 +4,6 @@ function drawPixel (point, stroke = `black`, width = 1) {
     previousPoint = point;
 }
 
-function drawLine(start, end, stroke = `black`, width = 1) {
-    if (stroke) {
-        ctx.strokeStyle = stroke;
-    }
-
-    if (width) {
-        ctx.lineWidth = width;
-    }
-
-    ctx.beginPath();
-    ctx.moveTo(start.x, start.y);
-    ctx.lineTo(end.x, end.y);
-    ctx.stroke();
-}
-
 function drawPoint(u, stroke = `black`, width = 1) {
             
     let p12 = interpolatePoint(p1, p2, u);
@@ -37,6 +22,33 @@ function drawPoint(u, stroke = `black`, width = 1) {
 
     }
     drawPixel(p1234, stroke, width);
+}
+
+function drawCircles(point) {
+    ctx.fillStyle = `black`;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, CIRCLESIZE, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.fillStyle = `gray`;
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, CIRCLESIZE * 0.85, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+function drawLine(start, end, stroke = `black`, width = 1) {
+    if (stroke) {
+        ctx.strokeStyle = stroke;
+    }
+
+    if (width) {
+        ctx.lineWidth = width;
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
 }
 
 function drawCurve(steps = 200, t = 1, stroke = `black`, width = 1) {
@@ -59,42 +71,6 @@ function drawCurve(steps = 200, t = 1, stroke = `black`, width = 1) {
     }
 }
 
-function redraw() {
-    scalePoint(p1);
-    scalePoint(p2);
-    scalePoint(p3);
-    scalePoint(p4);
-
-    ctx.fillStyle = BACKGROUNDCOLOR;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-
-    drawCurve(200, T);
-
-    drawCircles(p1);
-    drawCircles(p2);
-    drawCircles(p3);
-    drawCircles(p4);
-
-    oldWidth = canvasWidth;
-    oldHeight = canvasHeight;
-}
-
-function drawCircles(point) {
-    ctx.fillStyle = `black`;
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, CIRCLESIZE, 0, 2 * Math.PI);
-    ctx.fill();
-
-    ctx.fillStyle = `gray`;
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, CIRCLESIZE * 0.85, 0, 2 * Math.PI);
-    ctx.fill();
-}
-
-function equalTo(first, second) {
-    return (Math.abs(first - second) < 0.0001)
-}
-
 function movePoint(event) {
     var bounds = event.target.getBoundingClientRect();
     
@@ -113,4 +89,24 @@ function movePoint(event) {
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     redraw();
+}
+
+function redraw() {
+    scalePoint(p1);
+    scalePoint(p2);
+    scalePoint(p3);
+    scalePoint(p4);
+
+    ctx.fillStyle = BACKGROUNDCOLOR;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    drawCurve(200, T);
+
+    drawCircles(p1);
+    drawCircles(p2);
+    drawCircles(p3);
+    drawCircles(p4);
+
+    oldWidth = canvasWidth;
+    oldHeight = canvasHeight;
 }

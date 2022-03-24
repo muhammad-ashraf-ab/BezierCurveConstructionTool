@@ -15,6 +15,10 @@ function calculateDistance(x1, y1, x2, y2) {
     return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
+function equalTo(first, second) {
+    return (Math.abs(first - second) < 0.0001)
+}
+
 function choosePoint(x, y) {
     let pDist = [];
     pDist[0] = calculateDistance(x, y, p1.x, p1.y);

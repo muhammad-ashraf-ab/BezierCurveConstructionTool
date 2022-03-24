@@ -1,3 +1,13 @@
+function sliderUpdateT(value){
+    T = value;
+    let slider = document.getElementById("Tslider");
+    let sliderText = document.getElementById("TsliderTextValue");
+
+    slider.value = T;
+    sliderText.value = T;
+    redraw();
+}
+
 function resizeCanvas() {
     ctx.canvas.width  = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
@@ -36,13 +46,3 @@ function upListener(event) {
 }
 document.addEventListener('mouseup', upListener);
 document.addEventListener('touchend', upListener);
-
-function sliderUpdateT(value){
-    T = value;
-    let slider = document.getElementById("Tslider");
-    let sliderText = document.getElementById("TsliderTextValue");
-
-    slider.value = T;
-    sliderText.value = T;
-    redraw();
-}
