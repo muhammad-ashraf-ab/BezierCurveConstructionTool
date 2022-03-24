@@ -21,10 +21,6 @@ function equalTo(first, second) {
 
 function choosePoint(x, y) {
     let pDist = [];
-    // pDist[0] = calculateDistance(x, y, p1.x, p1.y);
-    // pDist[1] = calculateDistance(x, y, p2.x, p2.y);
-    // pDist[2] = calculateDistance(x, y, p3.x, p3.y);
-    // pDist[3] = calculateDistance(x, y, p4.x, p4.y);
 
     for (let i = 0; i < controlPoints.length; ++i) {
         pDist[i] = calculateDistance(x, y, controlPoints[i].x, controlPoints[i].y);
@@ -34,24 +30,6 @@ function choosePoint(x, y) {
     const index = pDist.indexOf(min);
 
     if (min < CIRCLESIZE * 1.25) {
-        // switch (index) {
-        //     case 0:
-        //         selectedPoint = p1;
-        //         break;
-                
-        //     case 1:
-        //         selectedPoint = p2;
-        //         break;
-                
-        //     case 2:
-        //         selectedPoint = p3;
-        //         break;
-                
-        //     case 3:
-        //         selectedPoint = p4;
-        //         break;
-        // }
-
         selectedPoint = controlPoints[index];
     }
 }
