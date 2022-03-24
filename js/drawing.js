@@ -25,15 +25,13 @@ function drawPoint(u, stroke = `black`, width = 1) {
 }
 
 function drawCircles(point) {
-    ctx.fillStyle = `black`;
+    ctx.fillStyle = `gray`;
+    ctx.strokeStyle = `black`;
+    ctx.lineWidth = CIRCLESIZE * 0.15;
     ctx.beginPath();
     ctx.arc(point.x, point.y, CIRCLESIZE, 0, 2 * Math.PI);
     ctx.fill();
-
-    ctx.fillStyle = `gray`;
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, CIRCLESIZE * 0.85, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.stroke();
 }
 
 function drawLine(start, end, stroke = `black`, width = 1) {
