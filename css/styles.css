@@ -1,0 +1,95 @@
+html, body {
+    width:  100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+#canvas {
+    display: block;
+}
+
+.wrapper {
+    position: relative;
+}
+
+.wrapper > canvas, #inputs {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#inputs {
+    width: 100%;
+}
+
+#Tlabel {
+    position: absolute;
+    left: 29%;
+    top: 15px;
+
+    opacity: 0.7;
+    color: #969696;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.slider {
+    position: absolute;
+    left: 30%;
+    top: 20px;
+    width: 40%;
+    height: 6px;
+
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 3px;
+    background: #484848;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: 0.2s;
+    transition: opacity 0.2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 5px;
+    height: 20px;
+    border-radius: 50%;
+    background: #969696;
+}
+
+.slider::-moz-range-thumb {
+    width: 3px;
+    height: 20px;
+    border-radius: 50%;
+    background: #969696;
+}
+
+.sliderTextValue {
+    position: absolute;
+    left: 71%;
+    top: 15px;
+    width: 5ch;
+
+    -moz-appearance: textfield;
+
+    opacity: 0.7;
+    border: 0;
+    color: #969696;
+    font-family: Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.sliderTextValue:hover {
+    opacity: 1;
+}
+
+.sliderTextValue::-webkit-outer-spin-button,
+.sliderTextValue::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
