@@ -9,8 +9,8 @@ var oldHeight;
 const BACKGROUNDCOLOR = `rgb(40, 40, 40)`;
 const CONSTRUCTIONLINECOLOR = `rgb(0, 0, 0)`;
 const CIRCLESIZE = 7;
-const STEPSIZE = 200;
 const NOOFNODES = 4;
+const EPSILON = 0.0000001;
 
 class Point {
     constructor(x, y) {
@@ -26,6 +26,7 @@ var previousPoint;
 const outboundsPoint = new Point(0, 0);
 
 var T = 1;
+var stepSize = 50;
 
 var moved = false;
 

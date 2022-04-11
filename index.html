@@ -15,7 +15,7 @@
 
         <div id="inputs">
 
-            <label for="Tslider" id="Tlabel">t</label>
+            <label for="Tslider" id="Tlabel" class="labels">t</label>
 
             <input id="Tslider" 
                    class="slider" 
@@ -34,6 +34,27 @@
                    min="0" 
                    max="1" 
                    oninput="sliderUpdateT(this.value)"/>
+
+                   
+            <label for="stepSlider" id="stepLabel" class="labels">Step Size</label>
+
+            <input id="stepSlider"
+                   class="slider"
+                   autocomplete="off"
+                   type="range"
+                   value="50"
+                   min="1"
+                   max="100"
+                   oninput="sliderUpdateStep(this.value)"/>
+
+            <input id="stepSliderTextValue" 
+                   class="sliderTextValue" 
+                   autocomplete="off" 
+                   type="number" 
+                   value="50" 
+                   min="1" 
+                   max="100" 
+                   oninput="sliderUpdateStep(this.value)"/>
 
         </div>
 

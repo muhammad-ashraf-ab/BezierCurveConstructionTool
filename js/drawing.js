@@ -58,13 +58,13 @@ function drawCurve(steps = 200, t = 1, stroke = `black`, width = 1) {
 
     var t0 = 0;
     var u = 1 / steps;
-    while (t0 <= t) {
+    while (t0 - EPSILON <= t) {
         drawPoint(t0, stroke, 3);
         t0 += u;
     }
 
-    while (t0 <= 1) {
-        drawPoint(t0, `rgb(150, 150, 150)`, 1);
+    while (t0 - EPSILON <= 1) {
+        drawPoint(t0, `rgba(150, 150, 150, 0.3)`, 1);
         t0 += u;
     }
 }
@@ -97,7 +97,7 @@ function redraw() {
     ctx.fillStyle = BACKGROUNDCOLOR;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    drawCurve(STEPSIZE, T);
+    drawCurve(stepSize, T);
 
     controlPoints.forEach(point => {
         drawCircles(point);

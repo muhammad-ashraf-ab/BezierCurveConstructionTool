@@ -14,8 +14,8 @@ function init() {
         item.style.background = BACKGROUNDCOLOR;
     }
 
-    document.getElementById("Tslider").step = STEPSIZE < 200 ? 1 / STEPSIZE : 0.005;
-    document.getElementById("TsliderTextValue").step = STEPSIZE < 100 ? 1 / STEPSIZE : 0.01;
+    document.getElementById("Tslider").step = stepSize < 200 ? 1 / stepSize : 0.005;
+    document.getElementById("TsliderTextValue").step = stepSize < 100 ? 1 / stepSize : 0.01;
 
     ctx.fillStyle = BACKGROUNDCOLOR;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -31,7 +31,7 @@ function init() {
 
     selectedPoint = outboundsPoint;
 
-    drawCurve(STEPSIZE, T);
+    drawCurve(stepSize, T);
 
     controlPoints.forEach(point => {
         drawCircles(point);
