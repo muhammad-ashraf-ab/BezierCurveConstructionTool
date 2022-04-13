@@ -89,11 +89,26 @@ function movePoint(event) {
     redraw();
 }
 
-function redraw() {
+function createControlPoints(noOfCtrlPts) {
+    clearArray(controlPoints);
+
+    for (let i = 0; i < noOfCtrlPts; ++i) {
+        controlPoints.push(new Point(getRandomNumber(100, canvasWidth - 100), getRandomNumber(100, canvasHeight - 100)))
+    }
+}
+
+function scaleCanvas() {
     controlPoints.forEach(point => {
         scalePoint(point);
     });
 
+    oldWidth = canvasWidth;
+    oldHeight = canvasHeight;
+
+    redraw();
+}
+
+function redraw() {
     ctx.fillStyle = BACKGROUNDCOLOR;
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
@@ -102,9 +117,6 @@ function redraw() {
     controlPoints.forEach(point => {
         drawCircles(point);
     });
-
-    oldWidth = canvasWidth;
-    oldHeight = canvasHeight;
 
     clearArray(points);
     points.push(controlPoints);

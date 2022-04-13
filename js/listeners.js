@@ -1,4 +1,4 @@
-function sliderUpdateT(value){
+function sliderUpdateT(value) {
     T = value;
     let slider = document.getElementById("Tslider");
     let sliderText = document.getElementById("TsliderTextValue");
@@ -8,7 +8,7 @@ function sliderUpdateT(value){
     redraw();
 }
 
-function sliderUpdateStep(value){
+function sliderUpdateStep(value) {
     let oldCurrentValue = document.getElementById("Tslider").value;
 
     stepSize = value;
@@ -35,12 +35,17 @@ function sliderUpdateStep(value){
     redraw();
 }
 
+function updateControlPoints(value) {
+    createControlPoints(value);
+    redraw();
+}
+
 function resizeCanvas() {
     ctx.canvas.width  = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
-    redraw();
+    scaleCanvas();
 }
 window.addEventListener('resize', resizeCanvas, false);
 
