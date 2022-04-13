@@ -20,10 +20,10 @@ function sliderUpdateStep(value) {
 
     let Tslider = document.getElementById("Tslider");
     let TsliderTextValue = document.getElementById("TsliderTextValue");
-    T = Math.round(oldCurrentValue * stepSize) * (1 / stepSize);
+    T = Math.round(oldCurrentValue * stepSize) / stepSize;
 
-    Tslider.step = stepSize < 100 ? T : 0.01;
-    TsliderTextValue.step = stepSize < 100 ? T : 0.01;
+    Tslider.step = stepSize < 100 ? 1 / stepSize : 0.01;
+    TsliderTextValue.step = stepSize < 100 ? 1 / stepSize : 0.01;
 
     Tslider.value = T;
     TsliderTextValue.value = T;
