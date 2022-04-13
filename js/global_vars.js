@@ -9,7 +9,6 @@ var oldHeight;
 const BACKGROUNDCOLOR = `rgb(40, 40, 40)`;
 const CONSTRUCTIONLINECOLOR = `rgb(0, 0, 0)`;
 const CIRCLESIZE = 7;
-const NOOFNODES = 4;
 const EPSILON = 0.0000001;
 
 class Point {

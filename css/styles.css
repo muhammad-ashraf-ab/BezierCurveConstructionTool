@@ -25,8 +25,8 @@ html, body {
 
 .slider {
     position: absolute;
-    left: 30%;
-    width: 40%;
+    left: 35%;
+    width: 30%;
     height: 6px;
 
     -webkit-appearance: none;
@@ -61,7 +61,7 @@ html, body {
 
 .sliderTextValue {
     position: absolute;
-    left: 71%;
+    left: 66%;
     width: 5ch;
 
     -moz-appearance: textfield;
@@ -70,6 +70,7 @@ html, body {
     border: 0;
     color: #969696;
     font-family: monospace;
+    text-align: center;
 }
 
 .sliderTextValue:hover {
@@ -88,6 +89,7 @@ html, body {
     opacity: 0.7;
     color: #969696;
     font-family: monospace;
+    text-align: center;
 }
 
 #stepSlider {
@@ -99,7 +101,7 @@ html, body {
 }
 
 #stepLabel {
-    left: 26%;
+    left: 31%;
     top: 18px;
 }
 
@@ -112,6 +114,16 @@ html, body {
 }
 
 #Tlabel {
-    left: 27.5%;
+    left: 32.5%;
     top: 48px;
+}
+
+#noOfCtrlPts {
+    left: 80%;
+    top: 33px;
+}
+
+#noOfCtrlPtsLabel {
+    left: 73.5%;
+    top: 33px;
 }
